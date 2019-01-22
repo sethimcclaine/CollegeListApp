@@ -5,11 +5,8 @@ if (!window.fetch) {
     window.fetch = iFetch;
 }
 
-const hostname = window.location.hostname.split('-').join('.').split('.')[1] || 'localhost';
 const API_BASE = 'https://interview-fe-challenge.grapenuts.flytedesk.com/interview_schools';
-const API_CREDENTIALS = hostname === 'localhost' ? 'same-origin' : 'include';
 const baseConfig = {
-    //credentials: API_CREDENTIALS,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -62,8 +59,8 @@ export const handledGetFetch = (path = '') =>
 const postFetch = (url, body) =>
     fetch(url, assoc('body', JSON.stringify(body), basePostConfig));
 
-export const handledPostFetch = (url, body) =>
-    postFetch(API_BASE + url, body)
+export const handledPostFetch = (path, body) =>
+    postFetch(API_BASE + path, body)
         .then(handleResponse);
 
 /**
@@ -77,6 +74,22 @@ export const handledPostFetch = (url, body) =>
 const putFetch = (url, body) =>
     fetch(url, assoc('body', JSON.stringify(body), basePutConfig));
 
-export const handledPutFetch = (url, body) =>
-    putFetch(API_BASE + url, body)
+export const handledPutFetch = (path, body) =>
+    putFetch(API_BASE + path, body)
+        .then(handleResponse);
+
+/**
+  * @private
+  * @name deleteFetch
+  * @description Initiates a POST fetch request using default options
+  * @param  {string} url  The URL to POST to
+  * @return {Promise}     A fetch Promise
+  */
+/*
+const deleteFetch = (url) =>
+    fetch(url, baseDeleteConfig);
+*/
+
+export const handledDeleteFetch = (path) =>
+    fetch(API_BASE + path, baseDeleteConfig)
         .then(handleResponse);
